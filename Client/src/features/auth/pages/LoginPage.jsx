@@ -16,12 +16,8 @@ const LoginPage = () => {
    const navigate = useNavigate();
 
   const onSubmit = async(e) => {
-    e.preventDefault();
+    e.preventDefault(); 
 
-    // if (currState === "Sign up" && step === 1) {
-    //   setStep(2);
-    //   return;
-    // }
 
     const data = { email, password, fullname };
     console.log(data);

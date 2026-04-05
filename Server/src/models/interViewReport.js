@@ -33,10 +33,6 @@ const skillsGapSchema = new mongoose.Schema({
     skill: {
         type: String,
         required: true
-    },
-    gapDescription: {
-        type: String,
-        required: true
     },severity:{
         type: String,
         enum: ['Low', 'Medium', 'High'],
@@ -79,9 +75,18 @@ const interViewReportSchema = new mongoose.Schema({
     technicalQuestions: [technicalQuestionSchema],
     behavioralQuestions: [behavioralQuestionSchema],
     skillsGapAnalysis: [skillsGapSchema],
-    preparationPlan: [prepareTionSchema]
+    preparationPlan: [prepareTionSchema],
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    title:{
+        type: String,
+        required:true,
+    }
 }, { timestamps: true });
 
-const InterViewReport = mongoose.model('InterViewReport', interViewReportSchema);
+const InterViewReportModel = mongoose.model('InterViewReport', interViewReportSchema);
 
-export default InterViewReport;
+export default InterViewReportModel;

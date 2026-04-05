@@ -2,6 +2,7 @@ import express from 'express';
 import userRouter from './routes/authRoute.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import interviewRouter from './routes/interviewRoute.js';
  
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors({
 
 
 app.use("/auth", userRouter);
+app.use("/interview", interviewRouter);
 
 
 export default app;
