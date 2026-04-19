@@ -79,7 +79,7 @@ const HomePage = () => {
                 <nav className="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
 
                     <h1 className="text-xl font-bold text-violet-400 tracking-wide">
-                        SkillSync AI
+                        SkillSync
                     </h1>
 
                     <div className="hidden md:flex gap-6 text-sm">

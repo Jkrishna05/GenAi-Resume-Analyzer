@@ -58,7 +58,7 @@ const ReportPage = () => {
     <div className="min-h-screen flex flex-col md:flex-row bg-[#0f1113] text-slate-200">
       <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 backdrop-blur-xl bg-white/5 p-5 md:p-6 flex flex-col">
         <h1 className="text-xl font-bold text-violet-400 mb-6 md:mb-10 flex justify-between">
-          SkillSync AI
+          SkillSync
           <div className=" md:hidden " >
               <button
               className="group relative p-3 md:p-4 hover:bg-red-500/20 hover:border-red-500/30 border border-transparent rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-slate-900"
