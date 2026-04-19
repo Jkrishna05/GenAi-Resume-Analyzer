@@ -1,17 +1,17 @@
-import { getInterviewReport,generateInterviewReport,getInterviewReportList } from "../services/interviewApi";
+import { getInterviewReport, generateInterviewReport, getInterviewReportList } from "../services/interviewApi";
 import { useContext } from "react";
-import {InterviewContext} from "../Interviewcontext";
+import { InterviewContext } from "../InterviewContext";
 import { useNavigate } from "react-router-dom";
 
 export const useInterview = () => {
     const { report, setReport, loading, setLoading, reportsList, setReportsList } = useContext(InterviewContext);
-      const navigate = useNavigate();
-    const handleGenerateReport = async (formData) => {
+    const navigate = useNavigate();
+    const handleGenerateReport = async ({jobDescription, selfDescription, resume}) => {
         try {
             setLoading(true);
-            const response = await generateInterviewReport(formData);
-            setReport(response.data.newReport);
-             navigate(`/report/${response.data.newReport._id}`);
+            const response = await generateInterviewReport({jobDescription, selfDescription, resume});
+            setReport(response.newReport);
+            navigate(`/report/${response.newReport._id}`);
         } catch (error) {
             console.log("Error generating interview report: ", error);
         } finally {
@@ -23,8 +23,8 @@ export const useInterview = () => {
         try {
             setLoading(true);
             const response = await getInterviewReport(id);
-            setReport(response.data.report);
-           
+            setReport(response.report);
+
         } catch (error) {
             console.log("Error fetching interview report: ", error);
         } finally {
@@ -35,14 +35,16 @@ export const useInterview = () => {
         try {
             setLoading(true);
             const response = await getInterviewReportList();
-            setReportsList(response.data.reports);
+            setReportsList(response.reports);
+            return response.reports;
         } catch (error) {
             console.log("Error fetching interview report list: ", error);
+            return [];
         } finally {
             setLoading(false);
         }
     }
 
     return { report, loading, reportsList, handleGenerateReport, handleGetReport, handleGetReportList };
-    
+
 };

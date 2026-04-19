@@ -1,27 +1,50 @@
 import axios from 'axios';
 
-const api=axios.create({
-    baseURL: 'http://localhost:3000',
-    withCredentials: true
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  withCredentials: true
 });
 
 export const generateInterviewReport = async ({ jobDescription, resume, selfDescription }) => {
-      try {
+    try {
         const formData = new FormData();
-        formData.append('jobDescription', jobDescription);
-        formData.append('selfDescription', selfDescription);
-        const blob = new Blob([resume], { type: 'text/plain' });
-        formData.append('resume', blob, 'resume.txt');
+
+        console.log("📤 Building FormData for API request:", {
+            hasJobDescription: !!jobDescription,
+            hasSelfDescription: !!selfDescription,
+            hasResume: !!resume,
+            resumeInfo: resume ? {
+                name: resume.name,
+                size: resume.size,
+                type: resume.type
+            } : null
+        });
+
+        formData.append("jobDescription", jobDescription);
+
+        if (selfDescription) {
+            formData.append("selfDescription", selfDescription);
+        }
+
+        if (resume) {
+            console.log("📎 Appending resume file:", resume.name);
+            formData.append("resume", resume);
+        }
+
+        console.log("🚀 Sending POST request to /interview/generate");
+        
         const response = await api.post('/interview/generate', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
+
+        console.log("✅ API Response received:", response.data);
         return response.data;
-      } catch (error) {
-        console.error("Error generating interview report:", error);
+    } catch (error) {
+        console.error("❌ Error generating interview report:", error);
         throw error;
-      }
+    }
 }
 export const getInterviewReport = async (id) => {
     try {

@@ -2,6 +2,9 @@ import React, { use, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useInterview } from "../hooks/InterviewHook";
+import { LogOut } from "lucide-react";
+import { useAuth } from "../../auth/hooks/AuthHook";
+
 
 const HomePage = () => {
 
@@ -9,13 +12,23 @@ const HomePage = () => {
     const [selfDescription, setSelfDescription] = useState("");
     const [resume, setResume] = useState(null);
     const [error, setError] = useState("");
-    const{ handleGenerateReport} = useInterview()
+    const { handleGenerateReport } = useInterview();
+    const {handleLogout} = useAuth();
     const navigate = useNavigate();
     const handleFileUpload = (e) => {
 
         const file = e.target.files[0];
 
-        if (!file) return;
+        if (!file) {
+            console.log("📁 No file selected");
+            return;
+        }
+
+        console.log("📁 File selected:", {
+            name: file.name,
+            size: file.size,
+            type: file.type
+        });
 
         const allowedTypes = [
             "application/pdf",
@@ -24,14 +37,16 @@ const HomePage = () => {
 
         if (!allowedTypes.includes(file.type)) {
             setError("Only PDF or DOCX files are allowed");
+            console.error("❌ Invalid file type:", file.type);
             return;
         }
 
+        console.log("✅ File accepted:", file.name);
         setError("");
         setResume(file);
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!jobDescription || (!selfDescription && !resume)) {
@@ -39,20 +54,16 @@ const HomePage = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("jobDescription", jobDescription);
-        formData.append("selfDescription", selfDescription);
-        formData.append("resume", resume);
-          
-        const res=await handleGenerateReport(formData);
-        
-       
-        console.log("Submitted:", {
-            jobDescription,
-            selfDescription,
-            resume
+        console.log("📝 Form submitted with:", {
+            hasJobDescription: !!jobDescription,
+            hasSelfDescription: !!selfDescription,
+            hasResume: !!resume,
+            resumeName: resume?.name
         });
-      
+
+        const res = await handleGenerateReport({ jobDescription, selfDescription, resume });
+
+        console.log("📊 Report generated:", res);
 
         setError("");
     };
@@ -87,12 +98,19 @@ const HomePage = () => {
                             History
                         </Link>
 
-                        <Link
+                        {/* <Link
                             to="/insights"
                             className="text-slate-400 hover:text-violet-300"
                         >
                             Insights
-                        </Link>
+                        </Link> */}
+                        <button className="flex items-center gap-2" onClick={() => {
+                            handleLogout();
+                            navigate("/login");
+                        }}>
+                            <LogOut size={20} />
+                            Logout
+                        </button>
 
                     </div>
 
@@ -140,7 +158,7 @@ const HomePage = () => {
                             </div>
 
                             <textarea
-                                
+                                name="jobDescription"
                                 value={jobDescription}
                                 onChange={(e) =>
                                     setJobDescription(e.target.value)
@@ -174,11 +192,10 @@ const HomePage = () => {
                                     </p>
 
                                     <p className="text-sm text-slate-400">
-                                        PDF or DOCX
+                                        PDF or DOCX, max 5MB
                                     </p>
-
                                     <input
-                                        
+
                                         type="file"
                                         accept=".pdf,.docx"
                                         onChange={handleFileUpload}
@@ -211,7 +228,7 @@ const HomePage = () => {
                                 </h2>
 
                                 <textarea
-                                    required
+                                    name="selfDescription"
                                     value={selfDescription}
                                     onChange={(e) =>
                                         setSelfDescription(e.target.value)

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
+import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
   Code,
   Users,
   CalendarCheck
@@ -16,8 +17,9 @@ import { useEffect } from "react";
 import { useInterview } from "../hooks/InterviewHook";
 import LoadingPage from "../components/Loader";
 const ReportPage = () => {
-    const { id } = useParams();
-    const { handleGetReport,loading } = useInterview();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { handleGetReport, loading, report } = useInterview();
 
   const [active, setActive] = useState("technical");
 
@@ -26,103 +28,116 @@ const ReportPage = () => {
     if (active === "behavioral") return <BehavioralQuestions />;
     if (active === "preparation") return <PreparationPlan />;
   };
-    useEffect(() => {
-  
-          if (id) {
-              handleGetReport(id);
-          }
-  
-      }, [id]);
+  useEffect(() => {
+    const fetchReport = async () => {
+      if (id) {
+        await handleGetReport(id);
+      }
+    };
 
+    fetchReport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   if (loading) {
     return (
-      // <div className="h-screen flex items-center justify-center text-white">
-      //   Loading reports...
-      // </div>
-      <LoadingPage/>
+      <LoadingPage />
+    );
+  }
+
+  if (!report) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-slate-300 bg-[#0f1113]">
+        <p>No report found. Please generate a report or check the URL.</p>
+      </div>
     );
   }
 
 
   return (
-
-    <div className="min-h-screen flex bg-gradient-to-br from-[#0f1113] via-[#121417] to-[#0f1113] text-slate-200">
-
-      {/* SIDEBAR */}
-
-      <aside className="w-72 border-r border-white/10 backdrop-blur-xl bg-white/5 p-6 flex flex-col">
-
-        <h1 className="text-xl font-bold text-violet-400 mb-10">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#0f1113] text-slate-200">
+      <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 backdrop-blur-xl bg-white/5 p-5 md:p-6 flex flex-col">
+        <h1 className="text-xl font-bold text-violet-400 mb-6 md:mb-10 flex justify-between">
           SkillSync AI
+          <div className=" md:hidden " >
+              <button
+              className="group relative p-3 md:p-4 hover:bg-red-500/20 hover:border-red-500/30 border border-transparent rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-slate-900"
+              onClick={() => navigate("/history")}
+              aria-label="Close and go to history"
+            >
+              <X
+                size={20}
+                className="text-slate-400 group-hover:text-red-400 transition-colors duration-200"
+              />
+              <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                Go to History
+              </span>
+            </button>
+          </div>
         </h1>
 
-        <nav className="flex flex-col gap-3">
-
+        <nav className="flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-visible">
           <button
             onClick={() => setActive("technical")}
-            className={`flex items-center gap-3 p-3 rounded-xl transition ${
-              active === "technical"
+            className={`flex items-center gap-3 p-3 rounded-xl transition whitespace-nowrap ${active === "technical"
                 ? "bg-violet-600/20 text-violet-400"
                 : "hover:bg-white/5"
-            }`}
+              }`}
           >
             <Code size={18} />
-            Technical Questions
+            Technical
           </button>
 
           <button
             onClick={() => setActive("behavioral")}
-            className={`flex items-center gap-3 p-3 rounded-xl transition ${
-              active === "behavioral"
+            className={`flex items-center gap-3 p-3 rounded-xl transition whitespace-nowrap ${active === "behavioral"
                 ? "bg-violet-600/20 text-violet-400"
                 : "hover:bg-white/5"
-            }`}
+              }`}
           >
             <Users size={18} />
-            Behavioral Questions
+            Behavioral
           </button>
 
           <button
             onClick={() => setActive("preparation")}
-            className={`flex items-center gap-3 p-3 rounded-xl transition ${
-              active === "preparation"
+            className={`flex items-center gap-3 p-3 rounded-xl transition whitespace-nowrap ${active === "preparation"
                 ? "bg-violet-600/20 text-violet-400"
                 : "hover:bg-white/5"
-            }`}
+              }`}
           >
             <CalendarCheck size={18} />
-            Preparation Plan
+            Preparation
           </button>
-
         </nav>
-
       </aside>
 
-      {/* MAIN CONTENT */}
-
-      <main className="flex-1 p-10">
-
-        {/* TOP CARDS */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
+      <main className="flex-1 p-5 md:p-10">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
+          
           <MatchScoreCard />
-
           <SkillGapPanel />
-
+          <div className="hidden md:block">
+            <button
+              className="group relative p-3 md:p-4 hover:bg-red-500/20 hover:border-red-500/30 border border-transparent rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-slate-900"
+              onClick={() => navigate("/history")}
+              aria-label="Close and go to history"
+            >
+              <X
+                size={20}
+                className="text-slate-400 group-hover:text-red-400 transition-colors duration-200"
+              />
+              <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                Go to History
+              </span>
+            </button>
+          </div>
         </div>
 
-        {/* CONTENT PANEL */}
-
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
-
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl">
           {renderContent()}
-
         </div>
-
       </main>
-
     </div>
   );
 };
