@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
         name, email, password: hashedPassword
     });
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-    res.cookie("token", token);
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'none' });
     res.status(201).json({
         success: true,
         message: "User registered successfully",
@@ -55,7 +55,7 @@ export const loginUser = async (req, res) => {
         });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-    res.cookie("token", token);
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'none' });
     res.status(200).json({
         success: true,
         message: "User logged in successfully",
@@ -69,7 +69,7 @@ export const loginUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
     const token = req.cookies.token;
     await blacklistTokenModel.create({ token });
-    res.clearCookie("token");
+    res.clearCookie("token", { httpOnly: true, secure: true, sameSite: 'none' });
     res.status(200).json({
         success: true,
         message: "User logged out successfully"
