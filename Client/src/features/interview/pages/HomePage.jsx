@@ -1,9 +1,6 @@
-import React, { use, useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useInterview } from "../hooks/InterviewHook";
-import { LogOut } from "lucide-react";
-import { useAuth } from "../../auth/hooks/AuthHook";
+import Header from "../components/Header";
 
 
 const HomePage = () => {
@@ -13,8 +10,6 @@ const HomePage = () => {
     const [resume, setResume] = useState(null);
     const [error, setError] = useState("");
     const { handleGenerateReport } = useInterview();
-    const {handleLogout} = useAuth();
-    const navigate = useNavigate();
     const handleFileUpload = (e) => {
 
         const file = e.target.files[0];
@@ -71,52 +66,8 @@ const HomePage = () => {
     //     return <LoadingPage />
     // }
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0f1113] via-[#121417] to-[#0f1113] text-slate-200">
-
-            {/* Header */}
-            <header className="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-lg border-b border-slate-800">
-
-                <nav className="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
-
-                    <h1 className="text-xl font-bold text-violet-400 tracking-wide">
-                        SkillSync
-                    </h1>
-
-                    <div className="hidden md:flex gap-6 text-sm">
-
-                        <Link
-                            to="/"
-                            className="text-violet-400 font-semibold border-b-2 border-violet-400 pb-1"
-                        >
-                            Dashboard
-                        </Link>
-
-                        <Link
-                            to="/history"
-                            className="text-slate-400 hover:text-violet-300"
-                        >
-                            History
-                        </Link>
-
-                        {/* <Link
-                            to="/insights"
-                            className="text-slate-400 hover:text-violet-300"
-                        >
-                            Insights
-                        </Link> */}
-                        <button className="flex items-center gap-2" onClick={() => {
-                            handleLogout();
-                            navigate("/login");
-                        }}>
-                            <LogOut size={20} />
-                            Logout
-                        </button>
-
-                    </div>
-
-                </nav>
-
-            </header>
+        <div className="min-h-screen bg-linear-to-br from-[#0f1113] via-[#121417] to-[#0f1113] text-slate-200">
+            <Header />
 
             <main className="max-w-6xl mx-auto px-6 py-10">
 
@@ -164,7 +115,7 @@ const HomePage = () => {
                                     setJobDescription(e.target.value)
                                 }
                                 placeholder="Paste job description..."
-                                className="w-full h-[320px] lg:h-[360px] bg-slate-950/70 rounded-xl p-4 resize-none focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                className="w-full h-80 lg:h-90 bg-slate-950/70 rounded-xl p-4 resize-none focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
 
                         </div>
@@ -212,11 +163,11 @@ const HomePage = () => {
 
                             </div>
                             <div className="flex items-center my-3">
-                                <hr className="flex-grow border-t border-slate-700" />
+                                <hr className="grow border-t border-slate-700" />
                                 <span className="px-4 text-violet-400 font-semibold text-2xl">
                                     or
                                 </span>
-                                <hr className="flex-grow border-t border-slate-700" />
+                                <hr className="grow border-t border-slate-700" />
                             </div>
 
                             {/* Self Description */}
@@ -252,7 +203,7 @@ const HomePage = () => {
                             <button
                                 disabled={!jobDescription || !selfDescription && !resume}
                                 type="submit"
-                                className="w-full bg-gradient-to-r from-violet-600 to-indigo-700 py-4 rounded-xl text-lg font-bold hover:scale-[1.02] transition shadow-lg disabled:opacity-50"
+                                className="w-full bg-linear-to-r from-violet-600 to-indigo-700 py-4 rounded-xl text-lg font-bold hover:scale-[1.02] transition shadow-lg disabled:opacity-50"
                             >
                                 Analyze Job Match →
                             </button>

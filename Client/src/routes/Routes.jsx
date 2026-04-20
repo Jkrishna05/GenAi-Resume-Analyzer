@@ -9,6 +9,7 @@ import HistoryPage from "../features/interview/pages/HistoryPage";
 const AppRoutes = () => {
   return (
     <div className="bg-red-500">
+      
     <Routes>
       <Route path="/" element={<Protected><HomePage /></Protected>} />
        {/* <Route path="/" element={<HomePage />} /> */}

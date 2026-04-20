@@ -38,7 +38,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-black via-gray-900 to-gray-950 text-white">
 
       {/* Left Section */}
       <div className="hidden md:flex flex-col justify-center items-start w-1/2 p-16">
@@ -53,7 +53,7 @@ const LoginPage = () => {
       </div>
 
       {/* Auth Card */}
-      <div className="w-[90%] sm:w-[420px] backdrop-blur-xl bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
+      <div className="w-[90%] sm:w-105 backdrop-blur-xl bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
 
         <h2 className="text-3xl font-semibold mb-6 text-center">
           {currState}
@@ -106,7 +106,7 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="mt-4 bg-gradient-to-r from-blue-500 to-pink-500 py-3 rounded-lg font-medium hover:opacity-90 transition"
+            className="mt-4 bg-linear-to-r from-blue-500 to-pink-500 py-3 rounded-lg font-medium hover:opacity-90 transition"
           >
             {currState === "Sign up"
               ? step === 2

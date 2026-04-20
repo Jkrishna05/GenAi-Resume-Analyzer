@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
-import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Code,
@@ -13,6 +12,7 @@ import BehavioralQuestions from "../components/BehavioralQuestions";
 import PreparationPlan from "../components/PreparationPlan";
 import SkillGapPanel from "../components/SkillGapPanel";
 import MatchScoreCard from "../components/MatchScoreCard";
+import Header from "../components/Header";
 import { useEffect } from "react";
 import { useInterview } from "../hooks/InterviewHook";
 import LoadingPage from "../components/Loader";
@@ -55,26 +55,14 @@ const ReportPage = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#0f1113] text-slate-200">
-      <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 backdrop-blur-xl bg-white/5 p-5 md:p-6 flex flex-col">
-        <h1 className="text-xl font-bold text-violet-400 mb-6 md:mb-10 flex justify-between">
-          SkillSync
-          <div className=" md:hidden " >
-              <button
-              className="group relative p-3 md:p-4 hover:bg-red-500/20 hover:border-red-500/30 border border-transparent rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-slate-900"
-              onClick={() => navigate("/history")}
-              aria-label="Close and go to history"
-            >
-              <X
-                size={20}
-                className="text-slate-400 group-hover:text-red-400 transition-colors duration-200"
-              />
-              <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                Go to History
-              </span>
-            </button>
-          </div>
-        </h1>
+    <div className="min-h-screen flex flex-col bg-[#0f1113] text-slate-200">
+      <Header />
+      
+      <div className="flex flex-1 flex-col md:flex-row">
+        <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 backdrop-blur-xl bg-white/5 p-5 md:p-6 flex flex-col">
+          <h1 className="text-xl font-bold text-violet-400 mb-6 md:mb-10">
+            Report Details
+          </h1>
 
         <nav className="flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-visible">
           <button
@@ -117,29 +105,16 @@ const ReportPage = () => {
           
           <MatchScoreCard />
           <SkillGapPanel />
-          <div className="hidden md:block">
-            <button
-              className="group relative p-3 md:p-4 hover:bg-red-500/20 hover:border-red-500/30 border border-transparent rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-slate-900"
-              onClick={() => navigate("/history")}
-              aria-label="Close and go to history"
-            >
-              <X
-                size={20}
-                className="text-slate-400 group-hover:text-red-400 transition-colors duration-200"
-              />
-              <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                Go to History
-              </span>
-            </button>
-          </div>
         </div>
 
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl">
           {renderContent()}
         </div>
       </main>
+      </div>
     </div>
   );
 };
+
 
 export default ReportPage;
